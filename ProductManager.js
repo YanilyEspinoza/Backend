@@ -1,26 +1,63 @@
-class ProductManager {
+//Éste debe poder agregar, consultar, """"modificar"""" y 
+//""""eliminar"""" un producto y manejarlo en persistencia 
+//de archivos (basado en entregable 1).
 
-    constructor(){
+/* --Debe tener un método addProduct el cual debe recibir un objeto con el 
+formato previamente especificado, asignarle un id autoincrementable y 
+guardarlo en el arreglo (recuerda siempre guardarlo como un array en el archivo).
+--Debe tener un método getProducts, el cual debe leer el archivo de productos y
+ devolver todos los productos en formato de arreglo.
+--Debe tener un método getProductById, el cual debe recibir un id, y tras leer
+ el archivo, debe buscar el producto con el id especificado y devolverlo en 
+ formato objeto 
+-- Debe tener un método updateProduct, el cual debe recibir el id del producto
+ a actualizar, así también como el campo a actualizar
+  (puede ser el objeto completo, como en una DB), y debe actualizar
+   el producto que tenga ese id en el archivo. NO DEBE BORRARSE SU ID 
+--Debe tener un método deleteProduct, el cual debe recibir un id y debe eliminar
+ el producto que tenga ese id en el archivo.
+ */
+
+ const fs = require('fs')
+const { json } = require('stream/consumers')
+
+class ProductManager {
+    constructor(path){
+        this.path = path
         this.products = []
         this.id = 1
     }
-    addProduct(title, description, price, thumbnail, code, stock) {
+    async getAll() {
+        try {
+            const objects = await fs.promises.readFile(this.path, 'utf-8')
+            JSON.parse(objects)
+            let nuevos= JSON.parse(objects)
+            const cualquiercosa = New ProductManager
+            nuevos.forEach(e=>cualquiercosa.addProduct(e))
+            
+            return       
+        } catch (err) {
+            console.log(`Error: ${err}`)
+        }
+    }
+    
+    addProduct(code, title, description, thumbnail, stock, price) {
         if (
+            code &&
             title &&
             description &&
-            price &&
             thumbnail &&
-            code &&
-            stock != undefined
+            stock != undefined &&
+            price 
         ) {
         const product = {
+            id: this.id,
             code,
             title,
             description,
             thumbnail,
             stock,
             price,
-            id: this.id,
         };
 
         if (this.products.find((product) => product.code === code)) {
@@ -46,9 +83,29 @@ class ProductManager {
         ? console.log( this.products.filter((product) => product.id === parseInt(id)))
         : console.log ("Not found")
     }
-}
-let cocina = new ProductManager();
+    async deleteById(id) {
+        let objects = await this.getAll()
 
+        try {
+            objects = objects.filter(ele => ele.id != id)
+            await this.saveFile(this.file, objects)
+
+        } catch (err) {
+            console.log(`Error: ${err}`)
+        }
+    }
+}
+const productos = new ProductManager('Products.json');
+const test = async () => {
+    try {
+        let array = await productos.getAll()
+    } catch (err) {
+        console.log(err)
+    }
+}
+test()
+/* 
+node ProductManager.js
 //Add products
 console.group("-- Añadiendo productos --")
 cocina.addProduct(
@@ -96,3 +153,4 @@ console.groupEnd();
 console.group("-- Productos del arreglo --")
 cocina.getProducts();
 console.groupEnd();
+ */

@@ -1,0 +1,20 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Desafíos de Programación Backend en CoderHouse",
+  "main": "ProductManager.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YanilyEspinoza/Backend.git"
+  },
+  "keywords": [],
+  "author": "Yanily Espinoza",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/YanilyEspinoza/Backend/issues"
+  },
+  "homepage": "https://github.com/YanilyEspinoza/Backend#readme"
+}
