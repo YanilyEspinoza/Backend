@@ -1,156 +1,142 @@
-//Éste debe poder agregar, consultar, """"modificar"""" y 
-//""""eliminar"""" un producto y manejarlo en persistencia 
-//de archivos (basado en entregable 1).
+//node ProductManager.js
 
-/* --Debe tener un método addProduct el cual debe recibir un objeto con el 
-formato previamente especificado, asignarle un id autoincrementable y 
-guardarlo en el arreglo (recuerda siempre guardarlo como un array en el archivo).
---Debe tener un método getProducts, el cual debe leer el archivo de productos y
- devolver todos los productos en formato de arreglo.
---Debe tener un método getProductById, el cual debe recibir un id, y tras leer
- el archivo, debe buscar el producto con el id especificado y devolverlo en 
- formato objeto 
--- Debe tener un método updateProduct, el cual debe recibir el id del producto
- a actualizar, así también como el campo a actualizar
-  (puede ser el objeto completo, como en una DB), y debe actualizar
-   el producto que tenga ese id en el archivo. NO DEBE BORRARSE SU ID 
---Debe tener un método deleteProduct, el cual debe recibir un id y debe eliminar
- el producto que tenga ese id en el archivo.
- */
-
- const fs = require('fs')
-const { json } = require('stream/consumers')
+const fs = require('fs');
+const path = require('path');
 
 class ProductManager {
-    constructor(path){
-        this.path = path
-        this.products = []
-        this.id = 1
+    constructor(path) {
+        this.path = path;
     }
-    async getAll() {
-        try {
-            const objects = await fs.promises.readFile(this.path, 'utf-8')
-            JSON.parse(objects)
-            let nuevos= JSON.parse(objects)
-            const cualquiercosa = New ProductManager
-            nuevos.forEach(e=>cualquiercosa.addProduct(e))
-            
-            return       
-        } catch (err) {
-            console.log(`Error: ${err}`)
-        }
-    }
-    
-    addProduct(code, title, description, thumbnail, stock, price) {
-        if (
-            code &&
-            title &&
+    async addProduct(title, description, price, thumbnail, code, stock) {
+        if (title &&
             description &&
+            price &&
             thumbnail &&
-            stock != undefined &&
-            price 
+            code &&
+            stock !== undefined
         ) {
-        const product = {
-            id: this.id,
-            code,
-            title,
-            description,
-            thumbnail,
-            stock,
-            price,
-        };
-
-        if (this.products.find((product) => product.code === code)) {
-            console.log("Código repetido")
+            let products = await this.readProducts();
+            const highestIdProduct = products.reduce((acc, curr) => {
+                if (curr.id > acc.id) {
+                    return curr;
+                }
+                return acc;
+            }, { id: 0 });
+            const product = {
+                id: highestIdProduct.id + 1,
+                code,
+                title,
+                description,
+                thumbnail,
+                stock,
+                price,
+            };
+            if (products.find((product) => product.code === code)) {
+                console.log("Código repetido")
+            } else {
+                products.push(product);
+                await this.writeProducts(products);
+                console.log("Se agregó el producto")
+                console.log(products)
+            }
         } else {
-            this.id++;
-            this.products.push(product);
-            console.log("Se agregó el producto")
+            console.log("Debe completar todos los datos")
         }
-        } else {
-            console.log ("Debe completar todos los datos")
-        }
+    };
+    async getProducts() {
+        const products = await this.readProducts();
+        return products;
     }
-
-    getProducts() {
-        this.products.length > 0
-        ? this.products.forEach((products) => console.log(products))
-        : console.log("No hay productos")
+    async getProductById(id) {
+        const products = await this.readProducts();
+        const product = await products.find(product => product.id === id);
+        return product;
     }
-
-    getProductById(id) {
-        this.products.find((product) => product.id === parseInt(id))
-        ? console.log( this.products.filter((product) => product.id === parseInt(id)))
-        : console.log ("Not found")
+    async updateProduct(id, updates) {
+        const products = await this.readProducts();
+        const index = await products.findIndex(product => product.id === id);
+        if (index === -1) return false;
+        Object.assign(products[index], updates);
+        await this.writeProducts(products);
+        const updatedProduct = products[index];
+        console.log(updatedProduct);
+        return updatedProduct;
     }
-    async deleteById(id) {
-        let objects = await this.getAll()
-
+    async deleteProduct(id) {
+        let products = await this.readProducts();
         try {
-            objects = objects.filter(ele => ele.id != id)
-            await this.saveFile(this.file, objects)
-
+            products = products.filter(ele => ele.id != id)
+            await this.writeProducts(products)
+            console.log(products)
         } catch (err) {
             console.log(`Error: ${err}`)
+        }
+        /* const updatedProducts = products.filter(product => product.id !== id);
+        await this.writeProducts(updatedProducts); //await
+        return console.log(updatedProducts) */
+    }
+    async readProducts() {
+        try {
+            const contents = fs.readFileSync(this.path, 'utf8');
+            const products = JSON.parse(contents);
+            return products;
+        } catch (error) {
+            console.error(error);
+            return [];
+        }
+    }
+    async writeProducts(products) {
+        try {
+            const productsString = JSON.stringify(products);
+            fs.writeFileSync(this.path, productsString, 'utf8');
+        } catch (error) {
+            console.error(error);
         }
     }
 }
-const productos = new ProductManager('Products.json');
+const filePath = path.join(__dirname, 'products.json');
+const productManager = new ProductManager(filePath);
+
+//test node ProductManager.js
+
 const test = async () => {
     try {
-        let array = await productos.getAll()
+        // Obtener todos los productos
+        let products = await productManager.getProducts();
+        console.group("---1. Obtener todos los productos---")
+        console.log(products);
+        console.groupEnd();
+
+        // Agregar 1 producto
+        console.group("---2. Agregar 1 producto y darle id---")
+        await productManager.addProduct(
+            'Colador de Pasta',
+            'Colador de Pasta de alta calidad',
+            12000,
+            'https://res.cloudinary.com/dhw4kmb5x/image/upload/v1667490839/fabihogar/colador_pasta1_s0als0.png',
+            '12335',
+            10,
+        );
+        console.groupEnd();
+
+        // Obtener 1 producto por su ID
+        console.group("---3. Obtener un producto por ID---")
+        let idResp = await productManager.getProductById(2);
+        console.log(idResp)
+        console.groupEnd();
+
+        // Actualizar un producto
+        console.group("---4. Actualizar un producto---")
+        await productManager.updateProduct(1, { title: 'Colador de Fideos' });
+        console.groupEnd();
+
+        // Eliminar un producto
+        console.group("---5. Eliminar un producto---")
+        await productManager.deleteProduct(3);
+        console.groupEnd();
+
     } catch (err) {
-        console.log(err)
+        console.error(err);
     }
 }
 test()
-/* 
-node ProductManager.js
-//Add products
-console.group("-- Añadiendo productos --")
-cocina.addProduct(
-    "Cocina Haier",
-    "Cocina de gas",
-    "50000",
-    "imgCocina1",
-    "95895",
-    "10"
-)
-cocina.addProduct(
-    "Cocina Haier",
-    "Cocina Eléctrica",
-    "60000",
-    "imgCocina2",
-    "95896",
-    "12"
-)
-
-//Producto repetido
-cocina.addProduct(
-    "Cocina Haier",
-    "Cocina Eléctrica",
-    "60000",
-    "imgCocina2",
-    "95896",
-    "12"
-)
-console.groupEnd();
-
-//Find ID
-console.group("-- Producto 1 --")
-cocina.getProductById(1);
-console.groupEnd();
-console.group("-- Producto 2 --")
-cocina.getProductById(2)
-console.groupEnd();
-
-//Id not found
-console.group("-- Producto no encontrado --")
-cocina.getProductById(3)
-console.groupEnd();
-
-// All products
-console.group("-- Productos del arreglo --")
-cocina.getProducts();
-console.groupEnd();
- */
