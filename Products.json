@@ -1,6 +1,6 @@
 [
     {
-      "id": 1,
+      "id": "1",
       "code": "12345",
       "title": "Colador de Pasta",
       "description": "Colador de Pasta de alta calidad",
@@ -9,7 +9,7 @@
       "price": 1500
     },
     {
-      "id": 2,
+      "id": "2",
       "code": "12346",
       "title": "Mortero Marmol",
       "description": "Mortero de Marmol de alta calidad",
@@ -18,7 +18,7 @@
       "price": 2000
     },
     {
-      "id": 3,
+      "id": "3",
       "code": "12347",
       "title": "Jarro Hervidor",
       "description": "Jarro Hervidor de alta calidad",

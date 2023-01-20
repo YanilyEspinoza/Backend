@@ -4,15 +4,16 @@ class ProductManager {
     constructor(path) {
         this.path = path;
     }
-    async addProduct(title, description, price, thumbnail, code, stock) {
+    async addProduct(title, description, code, price, stock, category, thumbnail) {
         if (title &&
             description &&
             price &&
-            thumbnail &&
             code &&
+            category &&
             stock !== undefined
         ) {
             let products = await this.readProducts();
+            const defaultstatus = true
             const highestIdProduct = products.reduce((acc, curr) => {
                 if (curr.id > acc.id) {
                     return curr;
@@ -21,12 +22,14 @@ class ProductManager {
             }, { id: 0 });
             const product = {
                 id: highestIdProduct.id + 1,
-                code,
                 title,
                 description,
-                thumbnail,
-                stock,
+                code,
                 price,
+                status: defaultstatus,
+                stock,
+                category,
+                thumbnail  
             };
             if (products.find((product) => product.code === code)) {
                 console.log("Código repetido")
@@ -46,7 +49,7 @@ class ProductManager {
     }
     async getProductById(id) {
         const products = await this.readProducts();
-        const product = await products.find(product => product.id === parseInt(id));
+        const product = await products.find(product => product.id === id);
         return product;
     }
     async updateProduct(id, updates) {
