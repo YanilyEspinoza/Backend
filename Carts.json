@@ -1,1 +1,24 @@
-[{"id":1,"make":"Ford","model":"Mustang","year":1969},{"id":1,"make":"Ford","model":"Mustang","year":1969},{"id":1,"make":"Ford","model":"Mustang","year":1969}]
+[
+  {
+    "0": {
+      "name": "Producto 1",
+      "description": "Descripcion del producto 1",
+      "price": 10
+    },
+    "1": {
+      "name": "Producto 2",
+      "description": "Descripcion del producto 2",
+      "price": 20
+    },
+    "2": {
+      "name": "Producto 3",
+      "description": "Descripcion del producto 3",
+      "price": 30
+    },
+    "cid": "bad12f4d-5ea2-4b78-a395-c85ecae63a06",
+    "products": [
+      { "id": "1", "quantity": 8 },
+      { "id": "2", "quantity": 1 }
+    ]
+  }
+]

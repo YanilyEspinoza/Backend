@@ -42,23 +42,36 @@ No es necesario realizar ninguna implementación visual, todo el flujo se puede 
 
 ## Sugerencias
 
-    - No olvides app.use(express.json())
-    - No es necesario implementar multer
-    - Link al video donde se explica.
+No es necesario implementar multer
 
 ## Formato del entregable
 
 Link al repositorio de Github con el proyecto completo, sin la carpeta de Node_modules.
 
-## Testeo en Postman
-Test del método get:
-Ruta: localhost:8080/api/products
-
-Test del método get/:pid:
-Ruta: localhost:8080/api/products/1
-
-Test del método post:
-Ruta: localhost:8080/api/products
+# Testeo en Postman
+1. Iniciar el servidor en la carpeta src escribiendo en la consola:
+```
+node index.js
+```
+2. Aplicar las rutas  que se muestran a continuación en postman.
+## *- - - PRODUCTOS - - -*
+### - Test del método get:
+Ruta: 
+```
+localhost:8080/api/products
+```
+### - Test del método get/:pid:
+Ruta: 
+```
+localhost:8080/api/products/1
+```
+### - Test del método post:
+Ruta: 
+```
+localhost:8080/api/products
+```
+Cuerpo:
+```
 {
     "title": "Producto nuevo",
     "description": "Descripcion del producto",
@@ -71,10 +84,64 @@ Ruta: localhost:8080/api/products
         "images/producto2.jpg"
     ]
 }
+```
 
-Test del método put:
-Ruta: localhost:8080/api/products/1
+### - Test del método put:
+Ruta: 
+```
+localhost:8080/api/products/1
+```
+Cuerpo:
+```
 {
 "title": "Nuevo título",
 "description": "Nueva descripción"
 }
+```
+
+## *- - - CARRITO - - -*
+
+### - Test del método post:
+Ruta: 
+```
+localhost:8080/api/carts/
+```
+Cuerpo:
+```
+{
+    "products": [
+        {
+            "name": "Producto 1",
+            "description": "Descripcion del producto 1",
+            "price": 10
+        },
+        {
+            "name": "Producto 2",
+            "description": "Descripcion del producto 2",
+            "price": 20
+        },
+        {
+            "name": "Producto 3",
+            "description": "Descripcion del producto 3",
+            "price": 30
+        }
+    ]
+}
+```
+### - Test del método GET:
+Ruta: 
+```
+localhost:8080/api/carts/ + "CID del carrito generado con el metodo POST"
+```
+
+### - Test del metodo Post:
+Ruta:
+```
+ localhost:8080/api/carts/ + "CID del carrito generado con el metodo POST" /product/ + "Número de ID seleccionado"
+```
+Cuerpo: 
+```
+{
+    "quantity": 1
+}
+```

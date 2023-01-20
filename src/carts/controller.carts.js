@@ -16,57 +16,29 @@ router.post('/', async (req, res) => {
   }
   });
 
-
-
-
-router.get('/:pid', async (req, res) => {
-  const pid = req.params.pid;
+router.get('/:cid', async (req, res) => {
+  const cid = req.params.cid;
   try {
-      let idResp = await productManager.getProductById(pid)
-      if (!idResp) {
-          res.status(404).send({ error: `Product with id ${pid} not found.` });
+      let cidResp = await cartManager.getCartById(cid)
+      if (!cidResp) {
+          res.status(404).send({ error: `Product with id ${cid} not found. ${cidResp}` });
       } else {
-          res.send(idResp);
+          res.send(cidResp);
       }        
   } catch (error) {
       res.status(500).send({ error: "Error al intentar leer archivo con el params" });
   }
 });
 
-router.post('/', async (req, res) => {
-  const { title, description, code, price, stock, category } = req.body;
-  const thumbnail = req.body.thumbnail || [];
-  console.log(req.body)
-  try {
-    await productManager.addProduct(title, description, code, price, stock, category, thumbnail);
-    res.status(201).json({ message: 'Producto agregado exitosamente' });
-  } catch (err) {
-    res.status(500).json({ error: 'Error al agregar producto' });
-  }
-});
-
-router.put('/:pid', async (req, res) => {
+router.post('/:cid/product/:pid', async (req, res) => {
+  const cid = req.params.cid;
   const pid = req.params.pid;
-  const updates = req.body;
-  try {
-    const updatedProduct = await productManager.updateProduct(pid, updates);
-    if (!updatedProduct) {
-      res.status(404).json({ error: `Product with id ${pid} not found.` });
-    } else {
-      res.json(updatedProduct);
-    }
-  } catch (err) {
-    res.status(500).json({ error: 'Error al actualizar producto' });
-  }
-});
-
-router.delete('/:pid', async (req, res) => {
-  const pid = req.params.pid;
-  try {
-    await productManager.deleteProduct(pid);
-    res.json({ message: `Producto con id ${pid} eliminado exitosamente` });
-  } catch (err) {
-    res.status(500).json({ error: 'Error al eliminar producto' });
+  const quantity = req.body.quantity || 1;
+  const cart = await cartManager.addProductToCart(cid, pid, quantity);
+  if (cart) {
+      res.status(200).json(cart);
+  } else {
+      res.status(404).json({ message: 'Cart not found' });
   }
 });
 
