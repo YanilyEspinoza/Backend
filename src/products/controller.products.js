@@ -1,4 +1,5 @@
-const { Router } = require('express')
+const { Router } = require('express');
+const { lutimesSync } = require('fs');
 const router = Router()
 
 const path = require('path');
@@ -7,6 +8,15 @@ const filePath = '../Products.json'
 const productManager = new ProductManager(filePath);
 
 router.get('/', async (req, res) => {
+  const user ={
+    name: "luiseee",
+    country : "ven"
+
+  }
+  res.render('index', user)
+});
+
+/* router.get('/', async (req, res) => {
   const { limit } = req.query;
   try {
       let products = await productManager.getProducts();
@@ -17,7 +27,7 @@ router.get('/', async (req, res) => {
   } catch (err) {
       res.status(500).send({ error: "Error al intentar leer archivo" });
   }
-});
+}); */
 
 router.get('/:pid', async (req, res) => {
   const pid = req.params.pid;
