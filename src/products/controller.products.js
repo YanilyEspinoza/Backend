@@ -1,19 +1,30 @@
 const { Router } = require('express');
-const { lutimesSync } = require('fs');
+const uploader = require('../utils')
 const router = Router()
 
 const path = require('path');
+const { title } = require('process');
 const ProductManager = require('../ProductManager');
 const filePath = '../Products.json'
 const productManager = new ProductManager(filePath);
 
+products =[]
+
 router.get('/', async (req, res) => {
-  const user ={
+  res.json({ message: products })
+});
+
+router.get('/holis', async (req, res) => {
+  const hola ={
     name: "luiseee",
-    country : "ven"
+    variedad : "ven"
 
   }
-  res.render('index', user)
+  res.render('hola', {
+    hola,
+    style: 'index.css',
+    title: 'Desafío 5'
+  })
 });
 
 /* router.get('/', async (req, res) => {
@@ -42,8 +53,32 @@ router.get('/:pid', async (req, res) => {
       res.status(500).send({ error: "Error al intentar leer archivo con el params" });
   }
 });
+//USANDO MULTER
 
-router.post('/', async (req, res) => {
+router.post('/', uploader.single('file'), async (req, res) => {
+  try {
+  if(!req.file){
+    return res.status(400).json({ message: 'No pudimos almacenar la imagen'})
+  }
+  const { name, country } = req.body
+
+  const product= {
+    name,
+    country
+  }
+
+  product.profile = req.file.path
+
+  products.push(product)
+
+  res.json({ message: 'Usuario creado'})
+  
+  } catch (err) {
+    res.status(500).json({ error: `${err}`});
+  }
+});
+
+/* router.post('/',  async (req, res) => {
   const { title, description, code, price, stock, category } = req.body;
   const thumbnail = req.body.thumbnail || [];
   try {
@@ -52,7 +87,7 @@ router.post('/', async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: 'Error al agregar producto' });
   }
-});
+}); */
 
 router.put('/:pid', async (req, res) => {
   const pid = req.params.pid;
