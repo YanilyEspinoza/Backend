@@ -12,6 +12,7 @@ document.getElementById("addProductForm").addEventListener("submit", (event) => 
         stock: document.getElementById("stockInput").value,
         price: document.getElementById("priceInput").value
     };
+    console.log(product)
     socket.emit("add product", product);
 });
 

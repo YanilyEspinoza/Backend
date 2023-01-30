@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
     let products = await productManager.getProducts();
     res.render('home.handlebars', {
     products: products,
-    title: 'socket.io',
+    title: 'Handlebars',
     style: 'index.css'
   })
 } catch (err) {
@@ -26,12 +26,25 @@ router.get('/realtimeproducts', async (req, res) => {
     let products = await productManager.getProducts();
     res.render('realtimeproducts.handlebars', {
     products: products,
-    title: 'socket.io',
+    title: 'Socket.io',
     style: 'index.css'
   })
 } catch (err) {
     res.status(500).send({ error: "Error al intentar leer archivo" });
 }  
 });
+
+/* router.post('/realtimeproducts', async (req, res) => {
+  try {
+    let products = await productManager.getProducts();
+    res.render('realtimeproducts.handlebars', {
+    products: products,
+    title: 'Socket.io',
+    style: 'index.css'
+  })
+} catch (err) {
+    res.status(500).send({ error: "Error al intentar leer archivo" });
+}  
+}); */
 
 module.exports = router

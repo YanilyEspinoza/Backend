@@ -24,14 +24,16 @@ Link al repositorio de Github con el proyecto completo, sin la carpeta de Node_m
 
 ## Testeo del entregable
 
-### - Ver servidor Http con express con lista de productos:
-
+Estando en la carpeta "src" ejecutar en la terminal:
+```
+node index.js 
+```
+Seguidamente abrimos nuestro navegador y para:
+### - Ver el servidor Http con express con la lista de productos:
 ```
 http://localhost:8080/api/products/
-
 ```
-### - Ver servidor con sockets actualizable:
+### - Ver el servidor con sockets actualizable:
 ```
 http://localhost:8081/api/products/realtimeproducts
-
 ```
