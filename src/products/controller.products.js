@@ -8,11 +8,24 @@ const ProductManager = require('../ProductManager');
 const filePath = '../Products.json'
 const productManager = new ProductManager(filePath);
 
-products =[]
+//products =[]
 
 router.get('/', async (req, res) => {
-  res.json({ message: products })
+  try {
+    let products = await productManager.getProducts();
+    res.render('home.handlebars', {
+    products: products,
+    title: 'socket.io',
+    style: 'index.css'
+  })
+} catch (err) {
+    res.status(500).send({ error: "Error al intentar leer archivo" });
+}  
 });
+
+/* router.get('/', async (req, res) => {
+  res.json({ message: products })
+}); */
 
 router.get('/holis', async (req, res) => {
   const hola ={
