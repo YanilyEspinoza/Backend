@@ -9,7 +9,7 @@ const port1 = 8080
 const port2 = 8081
 
 const app = express();
-const httpServer = app.listen(port2, ()=> console.log(`corriendo en el puerto ${port2}`));
+const httpServer = app.listen(port2, ()=> console.log(`corriendo con sockets en el puerto ${port2}`));
 const socketServer = new Server(httpServer);
 
 app.engine('handlebars', handlebars.engine());

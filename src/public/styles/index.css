@@ -1,23 +1,88 @@
-h1{
-    color: rgb(199, 14, 14);
+h1 {
+  color: rgb(199, 14, 14);
 }
-h2{
-    color: rgb(78, 78, 192);
+h2 {
+  color: rgb(78, 78, 192);
 }
-p{
-    color: rgb(5, 71, 33)
+p {
+  color: rgb(5, 71, 33);
 }
-body{
-    background-color: hsl(0, 7%, 89%);
+body {
+  background-color: hsl(0, 7%, 89%);
 }
-.flex{
-    display: flex;
-    flex-direction: row;
+.flex {
+  display: flex;
+  flex-direction: row;
 }
-.size{
-    width: 250px;
-    height: 250px;
+.size {
+  width: 250px;
+  height: 250px;
 }
-.space{
-    padding: 20px;
+.space {
+  padding: 20px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background-color: #ddd;
+  font-weight: bold;
+}
+
+th,
+td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #f2f2f2;
+}
+#addProductForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+#addProductForm input[type="text"] {
+  width: 200px;
+  height: 30px;
+  margin: 10px 0;
+  padding: 5px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid gray;
+}
+
+#addProductForm button[type="submit"] {
+  width: 200px;
+  height: 40px;
+  margin-top: 20px;
+  background-color: green;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#deleteProductBtn {
+  width: 200px;
+  height: 40px;
+  margin-top: 20px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+#deleteProductForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

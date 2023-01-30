@@ -15,28 +15,27 @@ document.getElementById("addProductForm").addEventListener("submit", (event) => 
     socket.emit("add product", product);
 });
 
-document.getElementById("deleteProductBtn").addEventListener("click", () => {
-    const productId = "id_del_producto_a_eliminar";
+document.getElementById("deleteProductForm").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const productId = {id: document.getElementById("idInput").value};
     socket.emit("delete product", productId);
     console.log(productId)
 });
 
-
 socket.on("new product", (product) => {
     // Agregar el nuevo producto a la lista
     const li = document.createElement("li");
-    li.innerHTML = `${product.name} - ${product.price}`;
+    li.innerHTML = `${product.title} - ${product.price}`;
     document.getElementById("productList").appendChild(li);
 });
 
-// Escuchar el evento de eliminación de productos
 socket.on("delete product", (productId) => {
     // Eliminar el producto correspondiente de la lista
     const productList = document.getElementById("productList");
-    const products = productList.getElementsByTagName("li");
-    for (let i = 0; i < products.length; i++) {
-        if (products[i].dataset.productId === productId) {
-            productList.removeChild(products[i]);
+    const products = Array.from(productList.getElementsByTagName("li"));
+    for (const product of products) {
+        if (product.dataset.productId === productId) {
+            productList.removeChild(product);
             break;
         }
     }
