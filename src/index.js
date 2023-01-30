@@ -5,23 +5,24 @@ const handlebars = require('express-handlebars')
 const { Server } = require('socket.io');
 const { Socket } = require('engine.io');
 
-const port = 8080
+const port1 = 8080
+const port2 = 8081
+
 const app = express();
-const httpServer = app.listen(8081, ()=> console.log("corriendo en el puerto 8081"));
+const httpServer = app.listen(port2, ()=> console.log(`corriendo en el puerto ${port2}`));
 const socketServer = new Server(httpServer);
 
 app.engine('handlebars', handlebars.engine());
 app.set('views', __dirname + '/views');
 app.set('view engine', 'handlebars');
 app.use(express.static(path.join(__dirname + '/public')));
-console.log(__dirname)
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 routes(app)
 
-app.listen(port, () => {
-    console.log(`corriendo con express en el puerto ${port}`)
+app.listen(port1, () => {
+    console.log(`corriendo con express en el puerto ${port1}`)
 });
 
 socketServer.on('connection', socket => {

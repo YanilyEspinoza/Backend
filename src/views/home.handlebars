@@ -1,18 +1,19 @@
 <div>
-{{!-- {{if products}} --}}
+{{#if products}}
   <h1>Lista de Productos</h1>
-  <ul>
+  <ul class="flex">
     {{#each products}}
-    <li>
+    <li class="space">
       <h2>{{title}}</h2>
       <p>{{description}}</p>
       <p>{{price}}</p>
+      <img src="{{thumbnail}}" alt="{{description}}" class="size">
     </li>
     {{/each}}
   </ul>
-{{!--   {{else}}
+  {{else}}
     <h1>No hay productos cargados</h1>
-  {{/if}} --}}
+  {{/if}}
 </div>
 
 <script src="/socket.io/socket.io.js"></script>

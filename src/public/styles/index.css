@@ -1,6 +1,23 @@
 h1{
-    color: red;
+    color: rgb(199, 14, 14);
+}
+h2{
+    color: rgb(78, 78, 192);
+}
+p{
+    color: rgb(5, 71, 33)
 }
 body{
-    background-color: blue;
+    background-color: hsl(0, 7%, 89%);
+}
+.flex{
+    display: flex;
+    flex-direction: row;
+}
+.size{
+    width: 250px;
+    height: 250px;
+}
+.space{
+    padding: 20px;
 }
