@@ -21,7 +21,7 @@ class ProductManager {
                 return acc;
             }, { id: 0 });
             const product = {
-                id: highestIdProduct.id + 1,
+                id: (parseInt(highestIdProduct.id) + 1).toString(),
                 title,
                 description,
                 code,
